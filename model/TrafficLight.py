@@ -1,15 +1,15 @@
 import agentpy as ap
 from enum import Enum
 
+class Color(Enum):
+    RED = 0
+    YELLOW = 1
+    GREEN = 2
+
 class TrafficLight(ap.Agent):
 
-    class Color(Enum):
-        RED = 0
-        YELLOW = 1
-        GREEN = 2
-        
     def setup(self):
-        self.state = self.Color.red
+        self.state = Color.RED
         self.vehicle_count = 0
 
     def add_vehicle(self):
@@ -22,9 +22,9 @@ class TrafficLight(ap.Agent):
         self.vehicle_count = 0
 
     def update(self):
-        self.Color += 1
-        if self.Color > 2:
-            self.Color = 0
+        self.state += 1
+        if self.state > 2:
+            self.state = 0
 
     def get_state(self):
         return self.state
