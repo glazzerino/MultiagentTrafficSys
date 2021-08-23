@@ -1,5 +1,6 @@
 from model.TrafficLight import TrafficLight
-import model.TrafficModel as TrafficModel
+from model.TrafficModel import TrafficModel
+
 import time
 print("**Multiagent Traffic System Simulator**")
 print("Team No.6")
@@ -7,10 +8,14 @@ print("Team No.6")
 parameters = {
     "size" : 20,
     "number_of_agents" : 10,
+    "number_of_lights" : 2,
 }
-env = TrafficModel.TrafficModel(parameters)
+
+env = TrafficModel(parameters)
 env.setup()
 # Main loop
+
 while(True):
-    # El servidor duerme por 3 segundos 
-    time.sleep(3)
+    # The server sleeps 
+    time.sleep(1)
+    env.step()

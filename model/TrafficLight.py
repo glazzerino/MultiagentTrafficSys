@@ -1,5 +1,6 @@
 import agentpy as ap
 from enum import Enum
+
 class TrafficLight(ap.Agent):
 
     class Color(Enum):
@@ -24,4 +25,7 @@ class TrafficLight(ap.Agent):
         self.Color += 1
         if self.Color > 2:
             self.Color = 0
-    
+
+    def get_state(self):
+        return self.state
+     
