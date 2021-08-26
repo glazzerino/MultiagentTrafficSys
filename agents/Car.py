@@ -2,6 +2,8 @@ import random
 import agentpy
 from enum import Enum
 
+from agentpy import agent
+
 class MODEL_TYPE(Enum):
     CAR = 0
     TRUCK = 1
@@ -11,7 +13,7 @@ class Car(agentpy.Agent):
     def setup(self):
         # Set mass as a random number between 1 and 10
         self.mass = random.randint(1, 10)
-
+        
         # Set model type as a random number between 0 and 2
         self.type = MODEL_TYPE(random.randint(0, 2))
 
@@ -23,4 +25,5 @@ class Car(agentpy.Agent):
 
     def print_data(self):
         print("Car: mass:", self.mass, "type:", self.type, "direction:", self.direction) 
+        print("----")
     

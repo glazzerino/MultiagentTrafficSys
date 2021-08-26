@@ -1,4 +1,3 @@
-from model.TrafficLight import TrafficLight
 from model.TrafficModel import TrafficModel
 
 import time

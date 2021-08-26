@@ -1,8 +1,8 @@
 import agentpy
 from agentpy.space import Space
 import numpy as np
-from model.Car import Car
-from model.TrafficLight import TrafficLight
+from agents.Car import Car
+from agents.TrafficLight import TrafficLight
 import matplotlib.pyplot as plt
 
 class TrafficModel(agentpy.Model):
@@ -20,7 +20,7 @@ class TrafficModel(agentpy.Model):
         for car in self.cars:
             car.print_data()
 
-    def position_agents(self):
+    def set_agents(self):
         self.space.add_agents(self.cars)
         # Define starting position for each car
         positions_car = []
