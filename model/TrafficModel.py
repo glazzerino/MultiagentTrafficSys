@@ -1,9 +1,11 @@
 import agentpy
 from agentpy.space import Space
+from matplotlib import pyplot as plt
 import numpy as np
 from agents.Car import Car
 from agents.TrafficLight import TrafficLight
-import matplotlib.pyplot as plt
+from agents.Human import Human
+import matplotlib 
 
 class TrafficModel(agentpy.Model):
 
@@ -11,10 +13,13 @@ class TrafficModel(agentpy.Model):
         self.matrix = np.zeros((self.p.size, self.p.size) )
         self.cars = agentpy.AgentList(self, self.p.number_of_agents, Car)
         self.lights = agentpy.AgentList(self, self.p.number_of_lights, TrafficLight)
-        
         # Instantiate continous space
         self.space = Space(self, shape=[self.p.size] * 2) # 2D space 
-        self.position_agents()
+        self.size = self.p.size
+        self.set_agents()
+
+    def size(self):
+       return self.size 
 
     def step(self):
         for car in self.cars:
@@ -22,31 +27,28 @@ class TrafficModel(agentpy.Model):
 
     def set_agents(self):
         self.space.add_agents(self.cars)
+        self.cars.set_position(self.space)
         # Define starting position for each car
-        positions_car = []
-        for i in range(self.p.number_of_agents):
-            # Variable used to decide staring street of each car
-            random_decision = np.random.randint(0, 3)
-            # Define starting position for each car
-            if random_decision == 0:
-                positions_car.append([0, i])
-            if random_decision == 1:
-                positions_car.append([self.p.size - 1, i])
-            if random_decision == 2:
-                positions_car.append([i, 0])
-            if random_decision == 3:
-                positions_car.append([i, self.p.size - 1])
-        
-        positions_lights = [[1, 1], [0, 0]]
-        self.space.add_agents(self.lights, positions_lights)
-        self.space.add_agents(self.cars, positions_car)
+        # positions_car = []
+        # for i in range(self.p.number_of_agents):
+        #     # Variable used to decide starting street of each car
+        #     random_decision = np.random.randint(0, 3)
+        #     # Define starting position for each car
+        #     if random_decision == 0:
+        #         positions_car.append([0, i])
+        #     if random_decision == 1:
+        #         positions_car.append([self.p.size - 1, i])
+        #     if random_decision == 2:
+        #         positions_car.append([i, 0])
+        #     if random_decision == 3:
+        #         positions_car.append([i, self.p.size - 1])
+        # positions_lights = [[1, 1], [0, 0]]
+        # # self.space.add_agents(self.lights, positions_lights)
+        # # self.space.add_agents(self.cars, positions_car)
+        # self.space.add_agents(self.lights, random=True)
+        # for car in self.cars:
+        #     car.set_position(self.space)
+        # for traffic_light in self.lights:
+        #     traffic_light.set_position(self.space)
 
-    def draw(self, ax):
-        ax.clear()
-        ax.set_title("Traffic System Simulator")
-        pos = self.space.position.values()
-        pos = np.array(list(pos)).T 
-        ax.scattter(*pos, s=1, c="b")
-        ax.set_xlim(0, self.p.size)
-        ax.set_ylim(0, self.p.size)
-        ax.set_axis_off()
+
