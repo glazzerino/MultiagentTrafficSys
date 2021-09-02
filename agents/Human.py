@@ -31,3 +31,6 @@ class Human(ap.Agent):
       else:
          print("Error: Human.step()")
       print("Human moved to " + dirstring) 
+
+   def set_destination(self, position: tuple):
+      self.destination = position

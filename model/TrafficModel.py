@@ -5,6 +5,7 @@ import numpy as np
 from agents.Car import Car
 from agents.TrafficLight import TrafficLight
 from agents.Human import Human
+import random
 import matplotlib 
 
 class TrafficModel(agentpy.Model):
@@ -13,10 +14,23 @@ class TrafficModel(agentpy.Model):
         self.matrix = np.zeros((self.p.size, self.p.size) )
         self.cars = agentpy.AgentList(self, self.p.number_of_agents, Car)
         self.lights = agentpy.AgentList(self, self.p.number_of_lights, TrafficLight)
-        # Instantiate continous space
         self.space = Space(self, shape=[self.p.size] * 2) # 2D space 
-        self.size = self.p.size
-        self.set_agents()
+        # Random as of now for testing purposes
+        self.space.add_agents(self.lights, random=True)
+        self.space.add_agents(self.cars, random=True) 
+
+        human_count = random.randint(0, self.p.max_humans)
+        self.humans = agentpy.AgentList(self, human_count, Human)
+
+        for human in self.humans:
+           which_traffic_light = random.randint(0, self.p.number_of_lights - 1)
+           light = self.lights[which_traffic_light]
+           pos = self.space.positions[light]
+           human.set_destination(pos) 
+
+        # Instantiate continous space
+        self.cars.set_position(self.space)
+        self.lights.set_position(self.space)
 
     def size(self):
        return self.size 
