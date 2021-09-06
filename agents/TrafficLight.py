@@ -1,6 +1,7 @@
 import agentpy as ap
 from enum import Enum
 from agents.Human import Human
+from agents.Car import ORIENTATION
 class Color(Enum):
     RED = 0
     GREEN = 1
@@ -33,5 +34,7 @@ class TrafficLight(ap.Agent):
     def set_position(self, space: ap.Space):
         self.space = space
         self.pos = space.positions[self]
-     
-    
+
+
+    def set_orientation(self, o: ORIENTATION):
+        self.orientation = o
