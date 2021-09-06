@@ -41,3 +41,9 @@ class TrafficModel(agentpy.Model):
             else:
                 positions.append([random.randint(0, intersect_size), start])
         self.space.add_agents(self.cars, positions)
+
+        # Set lights (only two)
+        lightpositions = []
+        lightpositions.append([intersect_size, intersect_size])
+        lightpositions.append([intersect_size, self.p.size - intersect_size])
+        self.space.add_agents(self.lights, lightpositions)
