@@ -1,15 +1,16 @@
 import random
+from agents.TrafficLight import TrafficLight
 import agentpy as ap
 from enum import Enum
+from agents.TrafficLight import Color
+from utils.orientation import ORIENTATION
 import numpy
 
 class MODEL_TYPE(Enum):
     CAR = 0
     TRUCK = 1
     BUS = 2
-class ORIENTATION(Enum):
-    H = 0
-    V = 1,
+
 class Car(ap.Agent):
     def setup(self):
 
@@ -20,13 +21,12 @@ class Car(ap.Agent):
 
         self.direction = random.randint(0, 1)
         self.max_speed = self.p.max_inertia / self.mass
-
+        self.light = None 
         self.orientation = random.randint(0, 1)
         if self.orientation == 1:
             self.orientation = ORIENTATION.H 
         else:
             self.orientation = ORIENTATION.V 
-        
         # Print data of the car
         self.print_data()
 
@@ -57,9 +57,25 @@ class Car(ap.Agent):
     def get_position(self):
         return self.space.positions[self]
 
+    def past_light(self):
+        lightpos = self.light.get_pos()
+        if self.orientation == ORIENTATION.H:
+            return self.get_position()[1] > lightpos[1]
+        else:
+            return self.get_position()[0] < lightpos[0]
+
     def calc_speed(self, distance: float):
         if distance > self.safe_dist:
-            self.velocity = self.vel_to_vec(self.max_speed)
+            if not self.past_light():
+                if self.light.get_state() == Color.GREEN:
+                    self.velocity = self.vel_to_vec(self.max_speed)
+                elif self.light.get_state() == Color.YELLOW:
+                    self.velocity = self.vel_to_vec(self.max_speed / 2)
+                else:
+                    # If red then stop
+                    self.velocity = self.vel_to_vec(0)
+            else:
+                self.velocity = self.vel_to_vec(self.max_speed)
         else:
             self.velocity = self.vel_to_vec(0)
     def move(self):
@@ -68,4 +84,6 @@ class Car(ap.Agent):
     def set_orientation(self, orientation: ORIENTATION):
         self.orientation = orientation
     
-        
+    def set_light(self, light: TrafficLight):
+        self.light = light
+    
