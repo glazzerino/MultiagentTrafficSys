@@ -9,6 +9,7 @@ import random
 import matplotlib 
 from utils.mathutils import MathUtils 
 from utils.orientation import ORIENTATION
+from agents.TrafficLight import Color
 
 class TrafficModel(agentpy.Model):
 
@@ -34,6 +35,8 @@ class TrafficModel(agentpy.Model):
         # Register traffic lights their coutnerpart
         self.lights[0].set_counterpart(self.lights[1])
         self.lights[1].set_counterpart(self.lights[0])
+        self.lights[0].set_color(Color.RED)
+        self.lights[1].set_color(Color.GREEN)
         print("Traffic lights set up")
 
     def step(self):
