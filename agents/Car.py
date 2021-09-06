@@ -8,6 +8,9 @@ class MODEL_TYPE(Enum):
     CAR = 0
     TRUCK = 1
     BUS = 2
+class ORIENTATION(Enum):
+    H = 0
+    V = 1,
 class Car(ap.Agent):
     def setup(self):
         # Set mass as a random number between 1 and 10
@@ -19,6 +22,12 @@ class Car(ap.Agent):
         self.direction = random.randint(0, 1)
         self.max_speed = self.p.max_inertia / self.mass
 
+        self.orientation = random.randint(0, 1)
+        if self.orientation == 1:
+            self.orientation = ORIENTATION.H 
+        else:
+            self.orientation = ORIENTATION.V 
+        
         # Print data of the car
         self.print_data()
 
@@ -29,3 +38,7 @@ class Car(ap.Agent):
     def set_position(self, space: ap.Space):
         self.space = space
         self.position = space.positions[self]
+
+    def get_orientation(self): 
+        return self.orientation
+    
