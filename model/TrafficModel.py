@@ -15,7 +15,7 @@ class TrafficModel(agentpy.Model):
 
     def setup(self):
         self.cars = agentpy.AgentList(self, self.p.cars, Car)
-        self.lights = agentpy.AgentList(self, self.p.lights, TrafficLight)
+        self.lights = agentpy.AgentList(self, 2, TrafficLight)
         self.space = Space(self, shape=[self.p.size] * 2) # 2D space 
 
         human_count = random.randint(0, self.p.max_humans)
@@ -52,14 +52,14 @@ class TrafficModel(agentpy.Model):
                 carpos = car.get_position()
                 # Refactor later
                 if n.get_orientation() == car.get_orientation() == ORIENTATION.H:
-                    if carpos[1] == npos[1] and carpos[0] < npos[0]:
-                        distance = npos[0] - carpos[0] 
+                    if carpos[0] == npos[0] and carpos[1] < npos[1]:
+                        distance = npos[1] - carpos[1] 
                         if distance < mindistance:
                             mindistance = distance
                             car.set_next_car(n)
                 if n.get_orientation() == car.get_orientation() == ORIENTATION.V:
-                    if carpos[0] == npos[0] and carpos[1] < npos[1]:
-                        distance = npos[1] - carpos[1] 
+                    if carpos[1] == npos[1] and carpos[0] < npos[0]:
+                        distance = npos[0] - carpos[0] 
                         if distance < mindistance:
                             mindistance = distance
                             car.set_next_car(n)

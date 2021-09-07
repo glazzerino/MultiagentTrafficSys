@@ -69,7 +69,7 @@ class Car(ap.Agent):
         self.next_car = car
 
     def calc_speed(self, distance: float):
-        if self.light.get_state() != Color.RED and distance > self.p.safe_distance:
+        if (self.light.get_state() != Color.RED or self.past_light()) and distance > self.p.safe_distance:
             if self.next_car is not None:
                 self.velocity = self.vel_to_vec(min(self.max_speed, self.next_car.max_speed))
             else:
