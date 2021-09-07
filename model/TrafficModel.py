@@ -44,18 +44,26 @@ class TrafficModel(agentpy.Model):
         self.lights.step()
         for car in self.cars:
             mindistance = self.diagonal
+            next_car = None
             for n in self.cars:
                 if car == n:
                     continue
-                if n.get_orientation() == car.get_orientation():
-                    # Check if car is atually in front of ours and keep it if its immediatly in front 
-                    # sry por la mega linea
-                    if (n.get_orientation == ORIENTATION.H and n.get_position()[1] > car.get_position()[1]) or n.get_orientation() == ORIENTATION.V and n.get_position()[0] < car.get_position()[0]:
-                        distance = MathUtils.dist(n.get_position(), car.get_position())
+                npos = n.get_position()
+                carpos = car.get_position()
+                # Refactor later
+                if n.get_orientation() == car.get_orientation() == ORIENTATION.H:
+                    if carpos[1] == npos[1] and carpos[0] < npos[0]:
+                        distance = npos[0] - carpos[0] 
                         if distance < mindistance:
                             mindistance = distance
-         
-            car.calc_speed(mindistance)
+                            next_car = n
+                if n.get_orientation() == car.get_orientation() == ORIENTATION.V:
+                    if carpos[0] == npos[0] and carpos[1] < npos[1]:
+                        distance = npos[1] - carpos[1] 
+                        if distance < mindistance:
+                            mindistance = distance
+                            next_car = n
+            car.calc_speed(mindistance, next_car)
             car.move()
         self.lights.step()
                 

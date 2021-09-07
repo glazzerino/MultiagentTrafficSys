@@ -64,20 +64,15 @@ class Car(ap.Agent):
         else:
             return self.get_position()[0] < lightpos[0]
 
-    def calc_speed(self, distance: float):
-        if distance > self.safe_dist:
-            if not self.past_light():
-                if self.light.get_state() == Color.GREEN:
-                    self.velocity = self.vel_to_vec(self.max_speed)
-                elif self.light.get_state() == Color.YELLOW:
-                    self.velocity = self.vel_to_vec(self.max_speed / 2)
-                else:
-                    # If red then stop
-                    self.velocity = self.vel_to_vec(0)
+    def calc_speed(self, distance: float, next_car = None):
+        if self.light.get_state() != Color.RED and distance > self.p.safe_distance:
+            if next_car is not None:
+                self.velocity = self.vel_to_vec(min(self.max_speed, next_car.velocity))
             else:
                 self.velocity = self.vel_to_vec(self.max_speed)
         else:
-            self.velocity = self.vel_to_vec(0)
+            self.velocity = [0, 0]
+
     def move(self):
         self.space.move_by(self, self.velocity)
 
