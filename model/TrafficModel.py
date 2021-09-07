@@ -51,25 +51,24 @@ class TrafficModel(agentpy.Model):
                 npos = n.get_position()
                 carpos = car.get_position()
                 # Refactor later
-                if n.get_orientation() == car.get_orientation() == ORIENTATION.H:
-                    if carpos[0] == npos[0] and carpos[1] < npos[1]:
-                        distance = npos[1] - carpos[1] 
-                        if distance < mindistance:
-                            mindistance = distance
-                            car.set_next_car(n)
-                if n.get_orientation() == car.get_orientation() == ORIENTATION.V:
-                    if carpos[1] == npos[1] and carpos[0] < npos[0]:
-                        distance = npos[0] - carpos[0] 
-                        if distance < mindistance:
-                            mindistance = distance
-                            car.set_next_car(n)
+                # We need to compare the relevant coordinate to tell if car is on same lane
+                # Default is Horizontal orientation
+                caxis = 0
+                naxis = 1
+                if car.orientation == ORIENTATION.V:
+                    caxis = 1
+                    naxis = 0
+                if carpos[caxis] == npos[caxis] and carpos[naxis] < npos[naxis]:
+                    distance = npos[naxis] - carpos[naxis] 
+                    if distance < mindistance:
+                        mindistance = distance
+                        car.set_next_car(n)
             car.calc_speed(mindistance)
             car.move()
-        self.lights.step()
                 
     def set_agent_coords(self):
         positions = []
-        intersect_size =round( self.p.size / 3)
+        intersect_size =round( self.p.size / self.p.inter_size_proportion)
         for car in self.cars:
             # Position is at half of space minus a random offset
             start = (self.p.size / 2) - random.randint(0, 1)
