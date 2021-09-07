@@ -44,7 +44,7 @@ class TrafficModel(agentpy.Model):
         self.lights.step()
         for car in self.cars:
             mindistance = self.diagonal
-            next_car = None
+            proximate_car = None
             for n in self.cars:
                 if car == n:
                     continue
@@ -56,14 +56,14 @@ class TrafficModel(agentpy.Model):
                         distance = npos[0] - carpos[0] 
                         if distance < mindistance:
                             mindistance = distance
-                            next_car = n
+                            car.set_next_car(n)
                 if n.get_orientation() == car.get_orientation() == ORIENTATION.V:
                     if carpos[0] == npos[0] and carpos[1] < npos[1]:
                         distance = npos[1] - carpos[1] 
                         if distance < mindistance:
                             mindistance = distance
-                            next_car = n
-            car.calc_speed(mindistance, next_car)
+                            car.set_next_car(n)
+            car.calc_speed(mindistance)
             car.move()
         self.lights.step()
                 

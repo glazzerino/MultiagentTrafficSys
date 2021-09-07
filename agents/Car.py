@@ -28,6 +28,7 @@ class Car(ap.Agent):
         else:
             self.orientation = ORIENTATION.V 
         # Print data of the car
+        self.next_car = None
         self.print_data()
 
     def set_safe_dist(self, safe_dist):
@@ -64,10 +65,13 @@ class Car(ap.Agent):
         else:
             return self.get_position()[0] < lightpos[0]
 
-    def calc_speed(self, distance: float, next_car = None):
+    def set_next_car(self, car: ap.Agent):
+        self.next_car = car
+
+    def calc_speed(self, distance: float):
         if self.light.get_state() != Color.RED and distance > self.p.safe_distance:
-            if next_car is not None:
-                self.velocity = self.vel_to_vec(min(self.max_speed, next_car.velocity))
+            if self.next_car is not None:
+                self.velocity = self.vel_to_vec(min(self.max_speed, self.next_car.max_speed))
             else:
                 self.velocity = self.vel_to_vec(self.max_speed)
         else:
@@ -81,4 +85,3 @@ class Car(ap.Agent):
     
     def set_light(self, light: TrafficLight):
         self.light = light
-    
