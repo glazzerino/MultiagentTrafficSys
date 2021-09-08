@@ -18,7 +18,6 @@ class Car(ap.Agent):
         self.velocity = 0
         # Set model type as a random number between 0 and 2
         self.type = MODEL_TYPE(random.randint(0, 2))
-
         self.direction = random.randint(0, 1)
         self.max_speed = self.p.max_inertia / self.mass
         self.light = None 
@@ -54,6 +53,7 @@ class Car(ap.Agent):
     
     def set_space(self, space: ap.Space):
         self.space = space
+        self.position = space.positions[self]
 
     def get_position(self):
         return self.space.positions[self]
@@ -85,3 +85,4 @@ class Car(ap.Agent):
     
     def set_light(self, light: TrafficLight):
         self.light = light
+    
