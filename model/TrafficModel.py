@@ -7,11 +7,9 @@ from agents.Car import Car
 from agents.TrafficLight import TrafficLight
 from agents.Human import Human
 import random
-import matplotlib
 from utils.mathutils import MathUtils
 from utils.orientation import ORIENTATION
 from agents.TrafficLight import Color
-
 
 class TrafficModel(agentpy.Model):
 
@@ -25,6 +23,7 @@ class TrafficModel(agentpy.Model):
         self.lights[1].set_orientation(ORIENTATION.V)
         self.set_agent_coords()
         self.diagonal = MathUtils.hypoth(self.p.size)
+
         for car in self.cars:
             car.set_safe_dist(self.p.safe_distance)
             if car.get_orientation() == ORIENTATION.H:
@@ -44,10 +43,11 @@ class TrafficModel(agentpy.Model):
         print(self.log)
         self.stepcount += 1
         self.lights.step()
+
         for car in self.cars:
             car_snapshot = {}
             mindistance = self.diagonal
-            proximate_car = None
+
             for n in self.cars:
                 if car == n:
                     continue
