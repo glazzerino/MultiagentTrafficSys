@@ -101,3 +101,6 @@ class TrafficModel(agentpy.Model):
         recordjson = json.dumps(self.records)
         # Add filesave logic here
         print(recordjson)
+
+        with open('data.json', 'w') as json_file:
+            json.dump(recordjson, json_file)
