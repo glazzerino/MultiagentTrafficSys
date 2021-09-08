@@ -122,5 +122,5 @@ class TrafficModel(agentpy.Model):
         # Add filesave logic here
         print(recordjson)
         # Save to json file
-        with open("output.json", "w") as f:
+        with open("D:\Unity\saves\Car\Assets\Scripts\data.json", "w") as f:
             f.write(recordjson)
