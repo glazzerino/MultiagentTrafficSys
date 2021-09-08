@@ -50,7 +50,7 @@ class TrafficModel(agentpy.Model):
             car_data = {}
             car_data['id'] = car.id
             car_data["model"] = car.get_model()
-            car_data["orientation"] = car.get_orientation_bool()
+            car_data["horizontal"] = car.get_orientation_bool()
             self.agent_manifest.append(car_data)
         
         
