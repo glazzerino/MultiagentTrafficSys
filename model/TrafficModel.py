@@ -97,7 +97,7 @@ class TrafficModel(agentpy.Model):
         intersect_size = round(self.p.size / self.p.inter_size_proportion)
         for car in self.cars:
             # Position is at half of space minus a random offset
-            start = (self.p.size / 2) - random.randint(0, 1)
+            start = (self.p.size / 2) - (random.randint(0, 1) * 2)
             if car.orientation == ORIENTATION.H:
                 positions.append([start, random.randint(0, intersect_size)])
             else:
@@ -130,5 +130,5 @@ class TrafficModel(agentpy.Model):
         # Add filesave logic here
         print(recordjson)
         # Save to json file
-        with open("D:\Unity\saves\Car\Assets\Scripts\data.json", "w") as f:
+        with open("data.json", "w") as f:
             f.write(recordjson)
