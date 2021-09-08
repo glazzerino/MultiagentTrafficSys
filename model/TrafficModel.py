@@ -53,8 +53,6 @@ class TrafficModel(agentpy.Model):
             car_data["horizontal"] = car.get_orientation_bool()
             self.agent_manifest.append(car_data)
         
-        
-
     def step(self):
         step_snapshot = []
         print(self.log)
@@ -83,9 +81,11 @@ class TrafficModel(agentpy.Model):
                     if distance < mindistance:
                         mindistance = distance
                         car.set_next_car(n)
+            # Recording the snapshot
             car.calc_speed(mindistance)
             car.move()
-            car_snapshot[car.id] = [car.get_position()[0], car.get_position()[1]] 
+            car_snapshot["id"] = car.id
+            car_snapshot["pos"] = [car.get_position()[0], car.get_position()[1]] 
             step_snapshot.append(car_snapshot)
         self.records.append(step_snapshot)
 
@@ -121,6 +121,6 @@ class TrafficModel(agentpy.Model):
         recordjson = json.dumps(output)
         # Add filesave logic here
         print(recordjson)
-
-        with open('data.json', 'w') as json_file:
-            json.dump(recordjson, json_file)
+        # Save to json file
+        with open("output.json", "w") as f:
+            f.write(recordjson)
