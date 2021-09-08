@@ -11,6 +11,8 @@ from utils.mathutils import MathUtils
 from utils.orientation import ORIENTATION
 from agents.TrafficLight import Color
 from agents.walker import Walker
+
+
 class TrafficModel(agentpy.Model):
 
     def setup(self):
@@ -19,7 +21,7 @@ class TrafficModel(agentpy.Model):
         self.space = Space(self, shape=[self.p.size] * 2)  # 2D space
 
         # manifest is a list of basic agent metadata
-        self.agent_manifest = [] 
+        self.agent_manifest = []
         self.records = []
 
         self.stepcount = 0
@@ -42,9 +44,9 @@ class TrafficModel(agentpy.Model):
         self.lights[1].set_color(Color.GREEN)
         print("Traffic lights set up")
 
-        #setup walkers
+        # setup walkers
         self.walkers = agentpy.AgentList(self, self.p.walkers, Walker)
-         
+
         self.set_agent_coords()
         for car in self.cars:
             car_data = {}
@@ -52,7 +54,7 @@ class TrafficModel(agentpy.Model):
             car_data["model"] = car.get_model()
             car_data["horizontal"] = car.get_orientation_bool()
             self.agent_manifest.append(car_data)
-        
+
     def step(self):
         step_snapshot = []
         print(self.log)
@@ -85,7 +87,8 @@ class TrafficModel(agentpy.Model):
             car.calc_speed(mindistance)
             car.move()
             car_snapshot["id"] = car.id
-            car_snapshot["pos"] = [car.get_position()[0], car.get_position()[1]] 
+            car_snapshot["pos"] = [
+                car.get_position()[0], car.get_position()[1]]
             step_snapshot.append(car_snapshot)
         self.records.append(step_snapshot)
 
@@ -116,6 +119,11 @@ class TrafficModel(agentpy.Model):
 
     def end(self):
         output = {}
+        output["metadata"] = {
+            "cars": self.p.cars,
+            "steps": self.p.steps
+            }
+
         output["manifest"] = self.agent_manifest
         output["records"] = self.records
         recordjson = json.dumps(output)
