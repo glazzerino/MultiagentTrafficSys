@@ -10,14 +10,18 @@ import random
 from utils.mathutils import MathUtils
 from utils.orientation import ORIENTATION
 from agents.TrafficLight import Color
-
+from agents.walker import Walker
 class TrafficModel(agentpy.Model):
 
     def setup(self):
         self.cars = agentpy.AgentList(self, self.p.cars, Car)
         self.lights = agentpy.AgentList(self, 2, TrafficLight)
         self.space = Space(self, shape=[self.p.size] * 2)  # 2D space
+
+        # manifest is a list of basic agent metadata
+        self.agent_manifest = [] 
         self.records = []
+
         self.stepcount = 0
         self.lights[0].set_orientation(ORIENTATION.H)
         self.lights[1].set_orientation(ORIENTATION.V)
@@ -37,6 +41,19 @@ class TrafficModel(agentpy.Model):
         self.lights[0].set_color(Color.RED)
         self.lights[1].set_color(Color.GREEN)
         print("Traffic lights set up")
+
+        #setup walkers
+        self.walkers = agentpy.AgentList(self, self.p.walkers, Walker)
+         
+        self.set_agent_coords()
+        for car in self.cars:
+            car_data = {}
+            car_data['id'] = car.id
+            car_data["model"] = car.get_model()
+            car_data["orientation"] = car.get_orientation_bool()
+            self.agent_manifest.append(car_data)
+        
+        
 
     def step(self):
         step_snapshot = []
@@ -98,6 +115,12 @@ class TrafficModel(agentpy.Model):
         self.cars.record("position")
 
     def end(self):
-        recordjson = json.dumps(self.records)
+        output = {}
+        output["manifest"] = self.agent_manifest
+        output["records"] = self.records
+        recordjson = json.dumps(output)
         # Add filesave logic here
         print(recordjson)
+
+        with open('data.json', 'w') as json_file:
+            json.dump(recordjson, json_file)

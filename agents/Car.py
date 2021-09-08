@@ -86,3 +86,14 @@ class Car(ap.Agent):
     def set_light(self, light: TrafficLight):
         self.light = light
     
+    def get_model(self):
+        # As string
+        if self.type == MODEL_TYPE.CAR:
+            return "car"
+        elif self.type == MODEL_TYPE.BUS:
+            return "bus"
+        else:
+            return "truck"
+
+    def get_orientation_bool(self):
+        return self.orientation == ORIENTATION.H
