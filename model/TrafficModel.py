@@ -5,13 +5,11 @@ import json
 import numpy as np
 from agents.Car import Car
 from agents.TrafficLight import TrafficLight
-from agents.Human import Human
 import random
 from utils.mathutils import MathUtils
 from utils.orientation import ORIENTATION
 from agents.TrafficLight import Color
 from agents.walker import Walker
-
 
 class TrafficModel(agentpy.Model):
 
@@ -38,7 +36,7 @@ class TrafficModel(agentpy.Model):
             else:
                 car.set_light(self.lights[1])
         print("Cars set up")
-        # Register traffic lights coutnerpart
+        # Register traffic lights counterpart
         self.lights[0].set_counterpart(self.lights[1])
         self.lights[1].set_counterpart(self.lights[0])
         self.lights[0].set_color(Color.RED)
