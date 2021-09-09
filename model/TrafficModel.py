@@ -28,6 +28,7 @@ class TrafficModel(agentpy.Model):
         self.lights[0].set_orientation(ORIENTATION.H)
         self.lights[1].set_orientation(ORIENTATION.V)
         self.set_agent_coords()
+        # Get hypothenuse of space
         self.diagonal = MathUtils.hypoth(self.p.size)
 
         for car in self.cars:
@@ -37,15 +38,12 @@ class TrafficModel(agentpy.Model):
             else:
                 car.set_light(self.lights[1])
         print("Cars set up")
-        # Register traffic lights their coutnerpart
+        # Register traffic lights coutnerpart
         self.lights[0].set_counterpart(self.lights[1])
         self.lights[1].set_counterpart(self.lights[0])
         self.lights[0].set_color(Color.RED)
         self.lights[1].set_color(Color.GREEN)
         print("Traffic lights set up")
-
-        # setup walkers
-        self.walkers = agentpy.AgentList(self, self.p.walkers, Walker)
 
         self.set_agent_coords()
         for car in self.cars:
