@@ -10,14 +10,12 @@ class Color(Enum):
     GREEN = 1
     YELLOW = 2
 
-
 class TrafficLight(ap.Agent):
 
     def setup(self):
         self.state = Color.RED
         self.vehicle_count = 0
         self.counterpart = None
-        self.clock = 1
 
     def add_vehicle(self):
         self.vehicle_count += 1
